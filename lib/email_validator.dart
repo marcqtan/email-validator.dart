@@ -22,6 +22,14 @@ class EmailValidator {
     return _isLetter(c) || _isDigit(c);
   }
 
+  static bool _isLocalDotEnd(String text) {
+    print(text);
+    if(text[_index] == '.' && (_index + 1 < text.length && text[_index+1] == '@')) {
+      return true;
+    }
+    return false;
+  }
+
   static bool _isAtom(String c, bool allowInternational) {
     return c.codeUnitAt(0) < 128
         ? _isLetterOrDigit(c) || _atomCharacters.contains(c)
@@ -81,7 +89,7 @@ class EmailValidator {
   static bool _skipAtom(String text, bool allowInternational) {
     final startIndex = _index;
 
-    while (_index < text.length && _isAtom(text[_index], allowInternational)) {
+    while (_index < text.length && (_isAtom(text[_index], allowInternational) || _isLocalDotEnd(text))) {
       _index++;
     }
 
