@@ -6,7 +6,7 @@ enum type { None, Alphabetic, Numeric, AlphaNumeric }
 
 class EmailValidator {
   static int _index = 0;
-  static const String _atomCharacters = "!#\$%&'*+-/=?^_`{|}~";
+  static const String _atomCharacters = "!#\$%&'*+-/=?^_`{|}~.";
   static type _domainType = type.None;
 
   static bool _isDigit(String c) {
@@ -20,14 +20,6 @@ class EmailValidator {
 
   static bool _isLetterOrDigit(String c) {
     return _isLetter(c) || _isDigit(c);
-  }
-
-  static bool _isLocalDotEnd(String text) {
-    print(text);
-    if(text[_index] == '.' && (_index + 1 < text.length && text[_index+1] == '@')) {
-      return true;
-    }
-    return false;
   }
 
   static bool _isAtom(String c, bool allowInternational) {
@@ -89,7 +81,7 @@ class EmailValidator {
   static bool _skipAtom(String text, bool allowInternational) {
     final startIndex = _index;
 
-    while (_index < text.length && (_isAtom(text[_index], allowInternational) || _isLocalDotEnd(text))) {
+    while (_index < text.length && _isAtom(text[_index], allowInternational)) {
       _index++;
     }
 
